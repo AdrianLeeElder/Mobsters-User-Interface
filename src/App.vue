@@ -14,7 +14,7 @@
         <img class="menu-right" src="https://avatars.dicebear.com/v2/male/.svg" style="width:20px; height: 20px;" /> Tracy
         <el-submenu index="4" class="menu-right">
           <template slot="title">
-            <i class="el-icon-menu"></i>
+            <i style="padding-right: 10px" class="el-icon-menu"></i>
           </template>
           <el-menu-item index="4-1">
             <i class="el-icon-setting"></i> Settings</el-menu-item>
