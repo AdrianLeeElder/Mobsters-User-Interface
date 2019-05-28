@@ -1,55 +1,75 @@
 <template>
   <div id="app">
-     <el-container>
-        <el-aside width="270px">
-          <el-menu
-            id="navbar"
-            default-active="1"
-            background-color="#545c64"
-            text-color="#fff"
-            active-text-color="#ffd04b">
-            <el-menu-item index="1">
-              <i class="el-icon-menu"></i>
-              <span>Dashboard</span>
-            </el-menu-item>
-          </el-menu>
-        </el-aside>
-        <el-container>
-          <el-header id="app-header">
-            <!-- <el-container> -->
-              <el-row style="margin-top: 20px;">
-                <el-col :span="6">
-                  Mobsters Automated Solutions
-                </el-col>
-                <el-col :offset="10">
-                  <img src="https://avatars.dicebear.com/v2/male/.svg" style="width:20px; height: 20px;"/>
-                  Tracy
-                </el-col>
-              </el-row>
-            <!-- </el-container> -->
-          </el-header>
-          <el-main>
-            <Main/>
-          </el-main>
-        </el-container>
-      </el-container>
-    </div>
+    <el-menu :router="true" mode="horizontal" default-active="2">
+      <el-menu-item index="1">
+        Home
+      </el-menu-item>
+      <el-menu-item index="/accounts">
+        Accounts
+      </el-menu-item>
+      <div style="text-align: right;">
+        <img class="menu-right" src="https://avatars.dicebear.com/v2/male/.svg" style="width:20px; height: 20px;" /> Tracy
+        <el-submenu index="4" class="menu-right">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+          </template>
+          <el-menu-item index="4-1">
+            <i class="el-icon-setting"></i> Settings</el-menu-item>
+          <el-menu-item index="4-2">
+            <i class="el-icon-information"></i> About</el-menu-item>
+          <el-menu-item index="4-3">
+            <i class="el-icon-circle-close"></i> Logout</el-menu-item>
+        </el-submenu>
+      </div>
+    </el-menu>
+    <el-container>
+      <el-main>
+        <router-view/>
+        <div id="osw-container"/>
+      </el-main>
+    </el-container>
+  </div>
 </template>
 
 <script>
-import Main from './components/Main.vue'
+import Accounts from "./components/Accounts.vue";
 
 export default {
-  name: 'app',
+  name: "app",
+  data() {
+    return {
+      authenticated: false
+    };
+  },
+  methods: {
+    async isAuthenticated() {
+      this.authenticated = await this.$auth.isAuthenticated();
+    },
+    login() {
+      this.$auth.loginRedirect("/");
+    },
+    async logout() {
+      await this.$auth.logout();
+      await this.isAuthenticated()
+
+      this.$router.push({path: '/'})
+    }
+  },
+  created() {
+    this.isAuthenticated();
+  },
+  watch: {
+    '$route': "isAuthenticated"
+  },
   components: {
-    Main
+    Accounts
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -61,13 +81,7 @@ body {
   margin: 0px;
 }
 
-#app-header {
-  background-color: white;
-  border-bottom: 1px solid #e3e3e3;
+.menu-right {
+  display: inline-block;
 }
-
-header.el-header {
-  padding: 0px;
-}
-
 </style>

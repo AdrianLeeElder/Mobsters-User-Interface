@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import axios from "axios"
+import api from "@/api.js"
 
 export default {
     name: "Accounts",
@@ -36,19 +36,15 @@ export default {
         }
     },
     methods: {
-        loadMobsters() {
+        async loadMobsters() {
             this.loading = true;
-            axios.get("/api/v1/mobsters?&pageNumber=" + (this.pageNumber - 1)).then((response) => {
-                 this.mobsters = response.data
-                 this.loading = false;
-            })
+            this.mobsters = await api.getMobsters(this.pageNumber - 1)
+            this.loading = false;
         },
-        setTotalPages() {
+        async setTotalPages() {
             this.loading = true;
-            axios.get("/api/v1/mobsters/total-pages").then((response) => {
-                 this.totalPages = response.data
-                 this.loading = false;
-            })
+            this.totalPages = await api.getTotalMobsterPages();
+            this.loading = false;
         }
     },
     created() {
