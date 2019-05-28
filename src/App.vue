@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <el-menu :router="true" mode="horizontal" default-active="2">
+      <el-menu-item>
+        <img src="@/assets/logo_file.png" width="75" height="40"/>
+      </el-menu-item>
       <el-menu-item index="1">
         Home
       </el-menu-item>
