@@ -1,5 +1,6 @@
 import Router from 'vue-router'
 import Accounts from "@/components/Accounts.vue"
+import Home from "@/components/Home.vue"
 import Vue from 'vue'
 import Auth from '@okta/okta-vue'
 
@@ -19,6 +20,14 @@ let router = new Router({
             path: '/accounts',
             name: 'Accounts',
             component: Accounts,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/',
+            name: 'Home',
+            component: Home,
             meta: {
                 requiresAuth: true
             }
