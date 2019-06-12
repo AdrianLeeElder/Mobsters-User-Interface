@@ -4,7 +4,7 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/en'
 import router from './router'
-
+import 'element-theme-dark';
 // Load the Sign-In Widget module
 var OktaSignIn = require('@okta/okta-signin-widget');
 

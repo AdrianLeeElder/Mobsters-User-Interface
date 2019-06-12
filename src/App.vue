@@ -12,7 +12,7 @@
       </el-menu-item>
       <div id="right-menu" style="text-align: right;">
         <img style="text-align:right; width: 30px; height: 30px;" class="menu-right" id="avatar" :src="avatarApi" />
-        <span id="userName">
+        <span id="userName" v-if="user">
            {{user.name}}
         </span>
         <el-submenu index="4" class="menu-right" :router="false">

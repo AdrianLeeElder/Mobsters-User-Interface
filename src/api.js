@@ -2,14 +2,12 @@ import axios from 'axios'
 import Vue from "vue"
 
 const client = axios.create({
-  baseURL: `http://localhost:8050`,
-  headers: {
-    'Access-Control-Allow-Origin': 'http://localhost:8080'
-  }
+  baseURL: `http://localhost:8080`
 })
 
 const apiVersion = "/api/v1/"
 const mobstersApi = apiVersion + "mobsters"
+const actionJobsApi = apiVersion + "action-jobs"
 
 export default {
   async execute (method, resource, data) {
@@ -31,5 +29,11 @@ export default {
   },
   getTotalMobsterPages() {
     return this.execute('get', mobstersApi + '/total-pages')
+  },
+  /**
+   * Show action jobs for the given mobster, and the limit.
+   */
+  getActionJobs(mobsterId, pageNumber, pageSize) {
+    return this.execute('get', actionJobsApi + '/mobster/' + mobsterId + '/' + pageNumber + '/' + pageSize)
   }
 }

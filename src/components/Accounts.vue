@@ -1,13 +1,18 @@
 <template>
    <div>
-        <el-table :data="mobsters" v-loading="loading" class="mb-4">
+        <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe>
             <el-table-column type="expand">
                 <template slot-scope="props">
-                    Actions
+                   <ActionJobs :mobster="props.row"/>
                 </template>
             </el-table-column>
-            <el-table-column label="Username" prop="username">
+            <el-table-column label="Username" prop="username" width="200">
             
+            </el-table-column>
+            <el-table-column label="Priority">
+                <template slot-scope="scope">
+                    <Priority :value="scope.row.priority"></Priority>
+                </template>
             </el-table-column>
         </el-table>
         <el-pagination
@@ -24,6 +29,8 @@
 
 <script>
 import api from "@/api.js"
+import ActionJobs from "@/components/ActionJobs.vue"
+import Priority from "./Priority.vue"
 
 export default {
     name: "Accounts",
@@ -50,6 +57,10 @@ export default {
     created() {
         this.setTotalPages();
         this.loadMobsters();
+    },
+    components: {
+        ActionJobs,
+        Priority
     }
 }
 </script>
