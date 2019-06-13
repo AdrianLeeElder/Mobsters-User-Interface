@@ -8,6 +8,7 @@ const client = axios.create({
 const apiVersion = "/api/v1/"
 const mobstersApi = apiVersion + "mobsters"
 const actionJobsApi = apiVersion + "action-jobs"
+const actionTemplatesApi = apiVersion + "action-templates"
 
 export default {
   async execute (method, resource, data) {
@@ -35,5 +36,11 @@ export default {
    */
   getActionJobs(mobsterId, pageNumber, pageSize) {
     return this.execute('get', actionJobsApi + '/mobster/' + mobsterId + '/' + pageNumber + '/' + pageSize)
+  },
+  getActionJobStatistics(template) {
+    return this.execute('get', actionJobsApi + '/statistics/' + template);
+  },
+  getActionTemplates() {
+    return this.execute('get', actionTemplatesApi);
   }
 }
