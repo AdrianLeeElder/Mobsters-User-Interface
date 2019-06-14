@@ -1,25 +1,31 @@
 <template>
-    <div>
-        <ActionJobStatistics class="mb-3"/>
+  <div>
+    <el-row :gutter="20">
+      <el-col :span="12">
         <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe>
-            <el-table-column type="expand">
-                <template slot-scope="props">
-                    <ActionJobs :mobster="props.row" />
-                </template>
-            </el-table-column>
-            <el-table-column label="Username" prop="username" width="200">
+          <el-table-column type="expand">
+            <template slot-scope="props">
+              <ActionJobs :mobster="props.row" />
+            </template>
+          </el-table-column>
+          <el-table-column label="Username" prop="username" width="200">
 
-            </el-table-column>
-            <el-table-column label="Priority">
-                <template slot-scope="scope">
-                    <Priority :value="scope.row.priority"></Priority>
-                </template>
-            </el-table-column>
+          </el-table-column>
+          <el-table-column label="Priority">
+            <template slot-scope="scope">
+              <Priority :value="scope.row.priority"></Priority>
+            </template>
+          </el-table-column>
         </el-table>
         <el-pagination class="mt-3" background layout="prev, pager, next" :page-count="totalPages" :current-page.sync="pageNumber" @current-change="loadMobsters">
 
         </el-pagination>
-    </div>
+      </el-col>
+      <el-col :span="12">
+        <ActionJobStatistics class="mb-3" />
+      </el-col>
+    </el-row>
+  </div>
 </template>
 
 <script>
