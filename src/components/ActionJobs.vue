@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Action Jobs</h1>
+        <h1>Action Jobs {{getStatus}}</h1>
         <el-table :data="actionJobsResponse.content" v-loading="loading" stripped border>
             <el-table-column type="expand">
                 <template slot-scope="props">
@@ -35,6 +35,11 @@ import "vue2-timeago/dist/vue2-timeago.css";
 import Status from "./Status.vue";
 import Actions from "./Actions.vue";
 const prettyMilliseconds = require("pretty-ms");
+
+const running = 'running';
+const idle = 'idle';
+const complete = 'complete';
+const queued = 'queued';
 
 export default {
   props: {
@@ -76,7 +81,8 @@ export default {
   components: {
     TimeAgo,
     Status,
-    Actions
+    Actions,
+    Status
   }
 };
 </script>

@@ -2,10 +2,15 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="12">
-        <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe>
+        <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe border>
           <el-table-column type="expand">
             <template slot-scope="props">
-              <ActionJobs :mobster="props.row" />
+              <ActionJobs :mobster="props.row"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="Status" width="75">
+            <template slot-scope="scope">
+              <Status :status="scope.row.actionJobStatus"/>
             </template>
           </el-table-column>
           <el-table-column label="Username" prop="username" width="200">
@@ -33,6 +38,7 @@ import api from "@/api.js";
 import ActionJobs from "@/components/ActionJobs.vue";
 import ActionJobStatistics from "./ActionJobStatistics.vue";
 import Priority from "./Priority.vue";
+import Status from "./Status.vue";
 
 export default {
   name: "Accounts",
@@ -63,7 +69,8 @@ export default {
   components: {
     ActionJobs,
     Priority,
-    ActionJobStatistics
+    ActionJobStatistics,
+    Status
   }
 };
 </script>

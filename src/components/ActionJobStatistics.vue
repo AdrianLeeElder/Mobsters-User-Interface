@@ -1,28 +1,33 @@
 <template>
-    <div>
-        <p align="right">
-            <a href="" @click.prevent="toggleDisplay()" style="margin-bottom: 10px;">{{requestDisplay}}</a>
-        </p>
-        <el-card v-if="show" style="margin-bottom: 10px">
-            <p v-if="statistics.averageCompletionTime" align="middle">Average Completion Time: {{averageCompletionTime}}</p>
-            <el-row>
-                <el-col :span="4">
-                   
-                </el-col>
-                <el-col :span="24">
-                    <el-progress :text-inside="true" :stroke-width="26" :percentage="statistics.completionProgress"></el-progress>
-                </el-col>
-            </el-row>
-            <el-row>
-                <div>
-                    <p align="left">Running: {{statistics.totalRunning}}</p>
-                    <p align="left">Completed: {{statistics.totalCompleted}}</p>
-                    <p align="left">Queued: {{statistics.totalQueued}}</p>
-                    <p align="left">Idle: {{statistics.totalIdle}}</p>
-                </div>
-            </el-row>
-        </el-card>
-    </div>
+  <div>
+    <p align="right">
+      <a href="" @click.prevent="toggleDisplay()" style="margin-bottom: 10px;">{{requestDisplay}}</a>
+    </p>
+    <el-card v-if="show" style="margin-bottom: 10px">
+      <p id="loading" v-show="loading">
+        <i class="el-icon-loading"></i>
+      </p>
+      <p v-if="statistics.averageCompletionTime" align="middle">Average Completion Time:
+        <b>{{averageCompletionTime}}</b>
+      </p>
+      <el-row>
+        <el-col :span="4">
+
+        </el-col>
+        <el-col :span="24">
+          <el-progress :text-inside="true" :stroke-width="26" :percentage="statistics.completionProgress"></el-progress>
+        </el-col>
+      </el-row>
+      <el-row>
+        <div>
+          <p align="left">Running: {{statistics.totalRunning}}</p>
+          <p align="left">Completed: {{statistics.totalCompleted}}</p>
+          <p align="left">Queued: {{statistics.totalQueued}}</p>
+          <p align="left">Idle: {{statistics.totalIdle}}</p>
+        </div>
+      </el-row>
+    </el-card>
+  </div>
 </template>
 
 <script>
@@ -38,7 +43,7 @@ export default {
       template: "",
       actionTemplates: [],
       show: true,
-      timer: setInterval(this.loadTemplates(), 100000)
+      timer: setInterval(async () => this.loadTemplates(), 100000)
     };
   },
   methods: {
@@ -57,7 +62,6 @@ export default {
     setTemplate() {
       if (this.actionTemplates && this.actionTemplates.length > 0) {
         this.template = this.actionTemplates[0].name;
-        console.log(this.template);
       }
     },
     toggleDisplay() {
@@ -88,7 +92,13 @@ export default {
 }
 
 a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
+}
+
+#loading {
+  top: 45px;
+  right: 25px;
+  position: absolute;
 }
 </style>

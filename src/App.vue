@@ -2,7 +2,7 @@
   <div id="app">
     <el-menu :router="true" mode="horizontal" default-active="/accounts">
       <el-menu-item>
-        <img src="@/assets/logo_file.png" width="75" height="38"/>
+        <!-- <img src="@/assets/logo_file.png" width="75" height="35"/> -->
       </el-menu-item>
       <el-menu-item index="/">
         Home
@@ -11,7 +11,7 @@
         Accounts
       </el-menu-item>
       <div id="right-menu" style="text-align: right;">
-        <img style="text-align:right; width: 30px; height: 30px;" class="menu-right" id="avatar" :src="avatarApi" />
+        <img style="text-align:right; width: 30px; height: 29px;" class="menu-right" id="avatar" :src="avatarApi" />
         <span id="userName" v-if="user">
            {{user.name}}
         </span>
@@ -19,10 +19,6 @@
           <template slot="title">
             <i style="padding-right: 10px" class="el-icon-menu"></i>
           </template>
-          <!-- <el-menu-item index="4-1">
-            <i class="el-icon-setting"></i> Settings</el-menu-item>
-          <el-menu-item index="4-2">
-            <i class="el-icon-information"></i> About</el-menu-item> -->
           <el-menu-item @click="logout()">
             <i class="el-icon-circle-close"></i> Logout</el-menu-item>
         </el-submenu>
