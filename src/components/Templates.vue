@@ -45,7 +45,7 @@
                                     <draggable v-model="showingTemplate.actions" draggable=".actionTemplateAction">
                                         <div v-for="ata in showingTemplate.actions" :key="ata.sequence" class="actionTemplateAction" style="display: flex; justify-content: space-between; align-items: center">
                                             <font-awesome-icon style="margin-right: 10px;cursor: move;" icon="bars" />
-                                            <p align="left" style="color: white;cursor: move;">
+                                            <p align="left" style="cursor: move;">
                                                 {{ata.name}}
                                             </p>
                                             <el-button size="small" type="danger" plain round style="margin-top: 2px; margin-bottom: 1px;" @click="removeAction(ata)">-</el-button>
@@ -77,7 +77,7 @@
                         </el-form-item>
                     </el-form>
                 </el-card>
-                <hr/>
+                <hr style="border-top: 1px solid #ccc;">
                 <div style="float: left;">
                     <el-button @click="saveTemplate()" type="primary" plain>Save</el-button>
                     <el-button @click="reset()" type="info" plain>Reset</el-button>

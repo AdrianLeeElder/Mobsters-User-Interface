@@ -92,7 +92,7 @@ export default {
 }
 
 a {
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
