@@ -9,9 +9,10 @@ const apiVersion = "/api/v1/"
 const mobstersApi = apiVersion + "mobsters"
 const actionJobsApi = apiVersion + "action-jobs"
 const actionTemplatesApi = apiVersion + "action-templates"
+const actionConfigApi = apiVersion + "action-configs"
 
 export default {
-  async execute (method, resource, data) {
+  async execute (method, resource, data) {  
     // inject the accessToken for each request
     let accessToken = await Vue.prototype.$auth.getAccessToken()
     return client({
@@ -21,12 +22,18 @@ export default {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
-    }).then(req => {
-      return req.data
     })
+    .then(response => {
+      return response.data
+    }).catch(error => {
+      return error.response;
+    }) 
   },
   getMobsters (number) {
     return this.execute('get', mobstersApi + `?pageNumber=${number}`)
+  },
+  getMobsters () {
+    return this.execute('get', mobstersApi + `/all`)
   },
   getTotalMobsterPages() {
     return this.execute('get', mobstersApi + '/total-pages')
@@ -42,5 +49,14 @@ export default {
   },
   getActionTemplates() {
     return this.execute('get', actionTemplatesApi);
+  },
+  saveActionTemplate(template) {
+    return this.execute('post', actionTemplatesApi, template);
+  },
+  deleteActionTemplate(id) {
+    return this.execute('delete', actionTemplatesApi + '/' + id);
+  },
+  getActionConfigs() {
+    return this.execute('get', actionConfigApi)
   }
 }

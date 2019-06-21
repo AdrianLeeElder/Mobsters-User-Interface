@@ -10,6 +10,9 @@
       <el-menu-item index="/accounts">
         Accounts
       </el-menu-item>
+      <el-menu-item index="/templates">
+        Templates
+      </el-menu-item>
       <div id="right-menu" style="text-align: right;">
         <img style="text-align:right; width: 30px; height: 29px;" class="menu-right" id="avatar" :src="avatarApi" />
         <span id="userName" v-if="user">
