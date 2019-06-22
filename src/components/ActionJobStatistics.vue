@@ -1,30 +1,26 @@
 <template>
   <div>
-    <p align="right">
-      <a href="" @click.prevent="toggleDisplay()" style="margin-bottom: 10px;">{{requestDisplay}}</a>
-    </p>
-    <el-card v-if="show" style="margin-bottom: 10px">
-      <p id="loading" v-show="loading">
-        <i class="el-icon-loading"></i>
-      </p>
-      <p v-if="statistics.averageCompletionTime" align="middle">Average Completion Time:
-        <b>{{averageCompletionTime}}</b>
-      </p>
-      <el-row>
-        <el-col :span="4">
-
+    <el-card>
+      <el-row type="flex" justify="end">
+        <el-col>
+          <el-progress :type="progressBarType" status="success" :text-inside="true" :stroke-width="26" :percentage="statistics.completionProgress"></el-progress>
         </el-col>
-        <el-col :span="24">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="statistics.completionProgress"></el-progress>
+        <el-col :span="16">
+          <div id="text-display">
+            <span v-if="statistics.averageCompletionTime">
+              <b>Average Completion Time: </b>
+              {{averageCompletionTime}}
+            </span>
+            <div v-for="(status, index) in statuses" :key="index" style="display: inline-block; float:right">
+              <el-tooltip :content="getToolTip(status)" effect="light">
+                <span style="margin-right: 10px;">
+                  <font-awesome-icon v-if="status.length > 0" :icon="getClass(status)" />
+                  <b style="margin-left: 5px">{{getValueForStatus(status)}}</b> {{status}}
+                </span>
+              </el-tooltip>
+            </div>
+          </div>
         </el-col>
-      </el-row>
-      <el-row>
-        <div>
-          <p align="left">Running: {{statistics.totalRunning}}</p>
-          <p align="left">Completed: {{statistics.totalCompleted}}</p>
-          <p align="left">Queued: {{statistics.totalQueued}}</p>
-          <p align="left">Idle: {{statistics.totalIdle}}</p>
-        </div>
       </el-row>
     </el-card>
   </div>
@@ -32,6 +28,7 @@
 
 <script>
 import api from "@/api.js";
+import { getIcon, getToolTip, Status } from "@/statuses";
 const prettyMilliseconds = require("pretty-ms");
 
 export default {
@@ -43,7 +40,9 @@ export default {
       template: "",
       actionTemplates: [],
       show: true,
-      timer: setInterval(async () => this.loadTemplates(), 100000)
+      timer: setInterval(async () => this.loadTemplates(), 100000),
+      statuses: [Status.IDLE, Status.QUEUED, Status.RUNNING, Status.COMPLETE],
+      progressBarType: "line"
     };
   },
   methods: {
@@ -66,9 +65,34 @@ export default {
     },
     toggleDisplay() {
       this.show = !this.show;
+    },
+    getToolTip(status) {
+      return getToolTip(status);
+    },
+    getClass(status) {
+      return getIcon(status);
+    },
+    getValueForStatus(status) {
+      switch (status) {
+        case Status.IDLE:
+          return this.statistics.totalIdle;
+        case Status.QUEUED:
+          return this.statistics.totalQueued;
+          break;
+        case Status.RUNNING:
+          return this.statistics.totalRunning;
+        case Status.COMPLETE:
+          return this.statistics.totalCompleted;
+        default:
+          throw "unknown status " + status;
+      }
     }
   },
+  destroyed: function() {
+    window.removeEventListener("resize", this.handleResize);
+  },
   created() {
+    window.addEventListener("resize", this.handleResize);
     this.loadTemplates();
   },
   computed: {
@@ -100,5 +124,9 @@ a {
   top: 45px;
   right: 25px;
   position: absolute;
+}
+
+#text-display {
+  padding-top: 5px;
 }
 </style>

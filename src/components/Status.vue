@@ -1,34 +1,26 @@
 <template>
     <div>
-        <i :class="getClass()"></i>
+        <font-awesome-icon v-if="getClass(this.status).length > 0" :icon="getClass(this.status)" />
     </div>
 </template>
 
 <script>
-export default {
-    props: {
-        name: "Status",
-        status: String
-    },
-    data() {
-        return {
+import { getIcon, Status} from "@/statuses";
 
-        }
+export default {
+  props: {
+    name: "Status",
+    status: String
+  },
+  data() {
+    return {
+      
+    };
+  },
+  methods: {
+    getClass(status) {
+        return getIcon(status)
     },
-    methods: {
-        getClass() {
-            switch (this.status) {
-                case "idle":
-                return "";
-                case "queued":
-                    return ""
-                break;
-                case "running":
-                return "el-icon-loading";
-                case "complete":
-                return "el-icon-success"
-            }
-        }
-    }
-}
+  }
+};
 </script>

@@ -1,35 +1,37 @@
 <template>
   <div>
-    <el-row :gutter="20">
-      <el-col :span="12">
-        <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe border>
-          <el-table-column type="expand">
-            <template slot-scope="props">
-              <ActionJobs :mobster="props.row"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="Status" width="75">
-            <template slot-scope="scope">
-              <Status :status="scope.row.actionJobStatus"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="Username" prop="username" width="200">
+    <el-col :span="24">
+      <el-row>
+        <ActionJobStatistics style="margin-bottom: 5px;" />
+      </el-row>
+      <el-row :gutter="20">
+        <el-col>
+          <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe border>
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <ActionJobs :mobster="props.row" />
+              </template>
+            </el-table-column>
+            <el-table-column label="Status" width="75">
+              <template slot-scope="scope">
+                <Status :status="scope.row.actionJobStatus" />
+              </template>
+            </el-table-column>
+            <el-table-column label="Username" prop="username" width="90%">
 
-          </el-table-column>
-          <el-table-column label="Priority">
-            <template slot-scope="scope">
-              <Priority :value="scope.row.priority"></Priority>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination class="mt-3" background layout="prev, pager, next" :page-count="totalPages" :current-page.sync="pageNumber" @current-change="loadMobsters">
+            </el-table-column>
+            <el-table-column label="Priority">
+              <template slot-scope="scope">
+                <Priority :value="scope.row.priority"></Priority>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination class="mt-3" background layout="prev, pager, next" :page-count="totalPages" :current-page.sync="pageNumber" @current-change="loadMobsters">
 
-        </el-pagination>
-      </el-col>
-      <el-col :span="12">
-        <ActionJobStatistics class="mb-3" />
-      </el-col>
-    </el-row>
+          </el-pagination>
+        </el-col>
+      </el-row>
+    </el-col>
   </div>
 </template>
 

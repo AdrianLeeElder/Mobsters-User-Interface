@@ -2,14 +2,20 @@ import Vue from 'vue'
 import App from './App.vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import 'element-ui/lib/theme-chalk/display.css';
 import locale from 'element-ui/lib/locale/lang/en'
 import router from './router'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faBars)
+library.add(faBars, faSpinner, faPaperPlane, faLightbulb, faCheckCircle);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
@@ -17,11 +23,11 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 var OktaSignIn = require('@okta/okta-signin-widget');
 
 // Use OktaSignIn
-var signIn = new OktaSignIn({baseUrl: 'https://dev-210965.okta.com'});
+var signIn = new OktaSignIn({ baseUrl: 'https://dev-210965.okta.com' });
 
 signIn.renderEl(
   // Assumes there is an empty element on the page with an id of 'osw-container'
-  {el: '#osw-container'},
+  { el: '#osw-container' },
 
   function success(res) {
     // The properties in the response object depend on two factors:
@@ -103,7 +109,7 @@ signIn.renderEl(
 // });
 
 Vue.use(router)
-Vue.use(ElementUI, {locale});
+Vue.use(ElementUI, { locale });
 
 Vue.config.productionTip = false
 
