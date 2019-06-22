@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Action Jobs {{getStatus}}</h1>
+        <h1>Action Jobs</h1>
         <el-table :data="actionJobsResponse.content" v-loading="loading" stripped border>
             <el-table-column type="expand">
                 <template slot-scope="props">
