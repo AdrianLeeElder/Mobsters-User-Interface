@@ -30,9 +30,9 @@ export default {
     }) 
   },
   getMobsters (number) {
-    return this.execute('get', mobstersApi + `?pageNumber=${number}`)
+    return this.execute('get', mobstersApi + '?pageNumber=' + number)
   },
-  getMobsters () {
+  getAllMobsters () {
     return this.execute('get', mobstersApi + `/all`)
   },
   getTotalMobsterPages() {

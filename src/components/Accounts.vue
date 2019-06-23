@@ -1,37 +1,32 @@
 <template>
   <div>
-    <el-col :span="24">
-      <el-row>
-        <ActionJobStatistics style="margin-bottom: 5px;" />
-      </el-row>
-      <el-row :gutter="20">
-        <el-col>
-          <el-table :data="mobsters" v-loading="loading" class="mb-4" stripe border>
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <ActionJobs :mobster="props.row" />
-              </template>
-            </el-table-column>
-            <el-table-column label="Status" width="75">
-              <template slot-scope="scope">
-                <Status :status="scope.row.actionJobStatus" />
-              </template>
-            </el-table-column>
-            <el-table-column label="Username" prop="username" width="90%">
-
-            </el-table-column>
-            <el-table-column label="Priority">
-              <template slot-scope="scope">
-                <Priority :value="scope.row.priority"></Priority>
-              </template>
-            </el-table-column>
-          </el-table>
-          <el-pagination class="mt-3" background layout="prev, pager, next" :page-count="totalPages" :current-page.sync="pageNumber" @current-change="loadMobsters">
-
-          </el-pagination>
-        </el-col>
-      </el-row>
-    </el-col>
+    <v-layout column justify-end>
+      <v-layout justify-center>
+        <v-flex xs12 md4>
+          <ActionJobStatistics />
+        </v-flex>
+      </v-layout>
+      <v-layout justify-center>
+        <v-flex xs12 md8>
+          <v-data-table :headers="accountHeaders" :items="mobsters" class="elevation-1" :loading="loading" hide-actions>
+            <template v-slot:items="props">
+              <td>
+                <Status :status="props.item.status" />
+              </td>
+              <td class="text-xs-left">
+                {{props.item.username}}
+              </td>
+              <td class="text-xs-left">
+                {{getPriority(props.item.priority)}}
+              </td>
+            </template>
+          </v-data-table>
+          <div class="text-xs-center pt-2">
+            <v-pagination v-model="pageNumber" :length="totalPages" @input="(number) => {this.pageNumber === number; this.loadMobsters()}"></v-pagination>
+          </div>
+        </v-flex>
+      </v-layout>
+    </v-layout>
   </div>
 </template>
 
@@ -49,7 +44,12 @@ export default {
       mobsters: [],
       totalPages: 0,
       pageNumber: 1,
-      loading: false
+      loading: false,
+      accountHeaders: [
+        { text: "Status", value: "status" },
+        { text: "Username", value: "username" },
+        { text: "Priority", value: "priority"}
+      ]
     };
   },
   methods: {
@@ -62,6 +62,13 @@ export default {
       this.loading = true;
       this.totalPages = await api.getTotalMobsterPages();
       this.loading = false;
+    },
+    getPriority(priority) {
+      switch(priority) {
+        case 0: return "Low";
+        case 1: return "Normal";
+        case 2: return "High";
+      }
     }
   },
   created() {
@@ -77,3 +84,5 @@ export default {
 };
 </script>
 
+<style>
+</style>

@@ -1,44 +1,42 @@
 <template>
   <div id="app">
-    <el-menu :router="true" mode="horizontal" default-active="/accounts">
-      <el-menu-item>
-        <!-- <img src="@/assets/logo_file.png" width="75" height="35"/> -->
-      </el-menu-item>
-      <el-menu-item index="/">
-        Home
-      </el-menu-item>
-      <el-menu-item index="/accounts">
-        Accounts
-      </el-menu-item>
-      <el-menu-item index="/templates">
-        Templates
-      </el-menu-item>
-      <div id="right-menu" style="text-align: right;">
-        <img style="text-align:right; width: 30px; height: 29px;" class="menu-right" id="avatar" :src="avatarApi" />
-        <span id="userName" v-if="user">
-           {{user.name}}
-        </span>
-        <el-submenu index="4" class="menu-right" :router="false">
-          <template slot="title">
-            <i style="padding-right: 10px" class="el-icon-menu"></i>
-          </template>
-          <el-menu-item @click="logout()">
-            <i class="el-icon-circle-close"></i> Logout</el-menu-item>
-        </el-submenu>
-      </div>
-    </el-menu>
-    <el-container>
-      <el-main>
-        <router-view/>
-        <div id="osw-container"/>
-      </el-main>
-    </el-container>
+    <v-app>
+      <v-navigation-drawer v-model="drawer" fixed app>
+        <v-list dense>
+          <v-list-tile to="accounts">
+            <v-list-tile-action>
+              <v-icon>account_circle</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Accounts</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile to="templates">
+            <v-list-tile-action>
+              <v-icon>schedule</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title>Templates</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-navigation-drawer>
+      <v-toolbar dark fixed app>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-title>Mobsters Bot v0.1 - By Adrian Elder</v-toolbar-title>
+      </v-toolbar>
+      <v-content>
+        <v-container>
+          <router-view/>
+        </v-container>
+      </v-content>
+    </v-app>
   </div>
 </template>
 
 <script>
 import Accounts from "./components/Accounts.vue";
-import {client} from "@/http-common.js";
+import { client } from "@/http-common.js";
 const avatarBaseApi = "https://ui-avatars.com/api/";
 
 export default {
@@ -47,30 +45,31 @@ export default {
     return {
       authenticated: false,
       user: {},
-      avatarApi: ''
+      avatarApi: "",
+      drawer: true
     };
   },
   methods: {
     async isAuthenticated() {
       this.authenticated = await this.$auth.isAuthenticated();
       this.user = await this.$auth.getUser();
-      this.avatarApi = await avatarBaseApi + "?name=" + this.user.name
+      this.avatarApi = (await avatarBaseApi) + "?name=" + this.user.name;
     },
     login() {
       this.$auth.loginRedirect("/");
     },
     async logout() {
       await this.$auth.logout();
-      await this.isAuthenticated()
+      await this.isAuthenticated();
 
-      this.$router.push({path: '/'})
+      this.$router.push({ path: "/" });
     }
   },
   created() {
     this.isAuthenticated();
   },
   watch: {
-    '$route': "isAuthenticated"
+    $route: "isAuthenticated"
   },
   components: {
     Accounts
@@ -103,12 +102,12 @@ body {
   vertical-align: middle;
 }
 
-*:focus { 
+*:focus {
   outline: none;
 }
 
 #avatar {
-  width:25px; 
+  width: 25px;
   height: 25px;
 }
 
@@ -117,6 +116,5 @@ body {
 }
 
 #right-menu {
-
 }
 </style>

@@ -1,10 +1,15 @@
 import Vue from 'vue'
+import 'babel-polyfill'
 import App from './App.vue'
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import 'element-ui/lib/theme-chalk/display.css';
-import locale from 'element-ui/lib/locale/lang/en'
+// import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+// import 'element-ui/lib/theme-chalk/display.css';
+// import locale from 'element-ui/lib/locale/lang/en'
 import router from './router'
+
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
@@ -18,6 +23,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 library.add(faBars, faSpinner, faPaperPlane, faLightbulb, faCheckCircle);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+Vue.use(Vuetify)
 
 // Load the Sign-In Widget module
 var OktaSignIn = require('@okta/okta-signin-widget');
@@ -109,7 +116,7 @@ signIn.renderEl(
 // });
 
 Vue.use(router)
-Vue.use(ElementUI, { locale });
+// Vue.use(ElementUI, { locale });
 
 Vue.config.productionTip = false
 

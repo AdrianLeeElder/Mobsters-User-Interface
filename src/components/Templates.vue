@@ -1,111 +1,123 @@
 <template>
     <div>
-        <el-row>
-            <el-col :span="4">
-                <el-dropdown @command="handleCommand">
-                    <el-button type="primary">
-                        Action Templates
-                        <i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item :command="template" v-for="template in templates" :key="template.id">
-                            {{template.name}}
-                        </el-dropdown-item>
-                        <el-dropdown-item command="new" divided icon="el-icon-circle-plus">
-                            Create New
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <p v-if="showingTemplate.lastRan" style="font-size: 15px">
-                    Last Ran:
-                    <time-ago :refresh="60" :datetime="showingTemplate.lastRan" locale="en" tooltip></time-ago> ago
-                </p>
-                <p v-else>
-                    Never Ran
-                </p>
-            </el-col>
-            <el-col :span="5">
-                <el-alert v-if="successMessage.length > 0" :title="successMessage" type="success" style="margin-bottom: 10px">
-                </el-alert>
-                <el-alert v-if="errorMessage.length > 0" :title="errorMessage" type="error" style="margin-bottom: 10px">
-                </el-alert>
-                <el-card>
-                    <el-form :model="showingTemplate" label-width="120px" size="mini">
-                        <el-form-item label="Template Name" prop="name">
-                            <el-input v-model="showingTemplate.name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="Run Frequency">
-                            <el-select v-model="showingTemplate.frequency">
-                                <el-option v-for="(frequency, index) in frequences" :key="index" :value="frequency" :label="frequency"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Actions">
-                            <el-card style="margin-top: 10px; height: 500px; overflow-y: scroll">
-                                <template v-if="showingTemplate.actions && showingTemplate.actions.length > 0">
-                                    <draggable v-model="showingTemplate.actions" draggable=".actionTemplateAction">
-                                        <div v-for="ata in showingTemplate.actions" :key="ata.sequence" class="actionTemplateAction" style="display: flex; justify-content: space-between; align-items: center">
-                                            <font-awesome-icon style="margin-right: 10px;cursor: move;" icon="bars" />
-                                            <p align="left" style="cursor: move;">
-                                                {{ata.name}}
-                                            </p>
-                                            <el-button size="small" type="danger" plain round style="margin-top: 2px; margin-bottom: 1px;" @click="removeAction(ata)">-</el-button>
-                                        </div>
-                                    </draggable>
-                                </template>
-                                <template v-else>
-                                    <p>No actions for this template. <br/>Click the + from the available actions list.</p>
-                                </template>
-                            </el-card>
-                        </el-form-item>
-                        <el-form-item label="Run with Mobsters">
-                            <div style="display: flex; justify-content: space-between; align-items: center">
-                                <el-select v-model="selectedMobsterId">
-                                    <el-option v-for="(mobster, index) in showingTemplate.mobsters" :key="index" :value="mobster.id" :label="mobster.username"></el-option>
-                                </el-select>
-                                <el-button v-if="selectedMobsterId" style="margin-left: 5px" type="danger" plain>-</el-button>
-                                <el-button v-if="showingTemplate.mobsters && showingTemplate.mobsters.length > 0" style="margin-left: 5px" type="danger" plain @click="removeMobsters">Remove All</el-button>
-                            </div>
-                        </el-form-item>
-                        <el-form-item label="Available Mobsters">
-                            <div style="display: flex; justify-content: space-between; align-items: center">
-                                <el-select v-model="selectedAvailableMobsterId">
-                                    <el-option v-for="(mobster, index) in mobsters" :key="index" :value="mobster.id" :label="mobster.username"></el-option>
-                                </el-select>
-                                <el-button v-if="selectedAvailableMobsterId && selectedAvailableMobsterId.length > 0" style="margin-left: 5px" type="success" plain @click="addMobster">+</el-button>
-                                <el-button style="margin-left: 5px" type="success" plain @click="addMobsters">Add All</el-button>
-                            </div>
-                        </el-form-item>
-                    </el-form>
-                </el-card>
-                <hr style="border-top: 1px solid #ccc;">
-                <div style="float: left;">
-                    <el-button @click="saveTemplate()" type="primary" plain>Save</el-button>
-                    <el-button @click="reset()" type="info" plain>Reset</el-button>
-                </div>
-                <el-button v-if="showingTemplate.id" plain type="danger" icon="el-icon-delete" style="float: right" @click="showTemplateDelete"></el-button>
-            </el-col>
-            <el-col :offset="1" :span="4" v-if="actionConfigs">
-                <el-card>
-                    <template slot="header">
-                        <p align="left" style="padding: 0; margin: 0;">
-                            <b>Available Actions</b>
-                        </p>
-                    </template>
-                    <div v-for="ata in actionConfigs" :key="ata.sequence" class="actionTemplateAction">
-                        <el-row>
-                            <el-col :span="6">
-                                <el-button size="small" type="success" plain round style="margin-top: 2px; margin-bottom: 1px" @click="addAction(ata.name)">+</el-button>
-                            </el-col>
-                            <el-col :span="14" style="vertical-align: bottom">
-                                <div style="text-align: left; margin-top: 10px">
-                                    {{ata.name}}
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-card>
-            </el-col>
-        </el-row>
+        <v-container>
+            <v-layout column>
+                <v-layout justify-center>
+                    <v-flex xs12 md6 class="mb-3">
+                        <v-alert :value="successMessage.length > 0" type="success">
+                            {{successMessage}}
+                        </v-alert>
+                        <v-alert :value="errorMessage.length > 0" type="error">
+                            {{errorMessage}}
+                        </v-alert>
+                        <v-card class="pa-3">
+                            <v-card-title>
+                                <h3>Select Template</h3>
+                            </v-card-title>
+                            <v-select v-model="showingTemplate" :items="templates" label="Templates" item-text="name" return-object @change="templateChanged">
+
+                            </v-select>
+                            <v-card-actions>
+                                <v-btn @click="createNew" color="success">
+                                    <v-icon left>
+                                        add_circle
+                                    </v-icon>
+                                    Create New
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+                <v-layout justify-center>
+                    <v-flex xs12 md6 v-if="Object.keys(showingTemplate).length > 0">
+                        <v-card class="pa-3 mb-3">
+                            <v-text-field v-model="showingTemplate.name" label="Edit Name"></v-text-field>
+                            <v-select :items="frequencies" label="Run Frequency" v-model="showingTemplate.frequency"></v-select>
+                            <p v-if="showingTemplate.lastRan" style="font-size: 15px" align="left">
+                                Last Ran:
+                                <time-ago :refresh="60" :datetime="showingTemplate.lastRan" locale="en" tooltip></time-ago> ago
+                            </p>
+                        </v-card>
+                        <v-card class="pa-3">
+                            <v-card-title primary-title>
+                                <v-container grid-list-md>
+                                    <v-layout :column="$vuetify.breakpoint.xsOnly">
+                                        <v-layout>
+                                            <v-flex xs12 md12>
+                                                <h3 class="headline">Configured Actions</h3>
+                                                <div v-if="showingTemplate.actions && showingTemplate.actions.length > 0" style="height: 450px; overflow-y: scroll">
+                                                    <draggable v-model="showingTemplate.actions" draggable=".actionTemplateAction">
+                                                        <div v-for="ata in showingTemplate.actions" :key="ata.sequence" class="actionTemplateAction" style="display: flex; justify-content: space-between; align-items: center">
+                                                            <font-awesome-icon style="margin-right: 10px;cursor: move;" icon="bars" />
+                                                            <p align="left" style="cursor: move;">
+                                                                {{ata.name}}
+                                                            </p>
+                                                            <!-- <el-button size="small" type="danger" plain round style="margin-top: 2px; margin-bottom: 1px;" >-</el-button> -->
+                                                            <v-btn fab small color="error" @click="removeAction(ata)">
+                                                                <v-icon>remove</v-icon>
+                                                            </v-btn>
+                                                        </div>
+                                                    </draggable>
+                                                </div>
+                                                <div v-else>
+                                                    <p>No actions for this template. <br/>Click the + from the available actions list.</p>
+                                                </div>
+                                            </v-flex>
+                                        </v-layout>
+                                        <v-divider vertical class="ml-3 mr-3"></v-divider>
+                                        <v-layout>
+                                            <v-flex xs12 md12>
+                                                <h3 class="headline">Available Actions</h3>
+                                                <div style="height: 450px; overflow-y: scroll">
+                                                    <div v-for="config in actionConfigs" :key="config.sequence" class="actionTemplateAction" style="display: flex; justify-content: space-between; align-items: center">
+                                                        <p align="left" style="cursor: move;">
+                                                            {{config.name}}
+                                                        </p>
+                                                        <!-- <el-button size="small" type="danger" plain round style="margin-top: 2px; margin-bottom: 1px;" >-</el-button> -->
+                                                        <v-btn fab small color="success" @click="addAction(config.name)">
+                                                            <v-icon>add_circle</v-icon>
+                                                        </v-btn>
+                                                    </div>
+                                                </div>
+                                            </v-flex>
+                                        </v-layout>
+                                    </v-layout>
+                                </v-container>
+                            </v-card-title>
+                            <v-divider class="mt-3 mb-3"></v-divider>
+                            <v-btn style small color="success" @click="addMobsters">Add All</v-btn>
+                            <v-btn style small color="error" @click="removeMobsters">Remove All</v-btn>
+                            <v-select v-model="showingTemplate.mobsters" item-value="id" item-text="username" return-object :items="mobsters" attach chips label="Run With Mobsters" multiple>
+
+                            </v-select>
+                            <v-divider></v-divider>
+                            <v-card-actions>
+                                <v-btn flat color="success" @click="saveTemplate()">Save</v-btn>
+                                <v-btn flat color="info" @click="reset()">Reset</v-btn>
+                                <v-dialog v-model="showingDeleteTemplate" persistent max-width="250">
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn flat color="error" v-if="showingTemplate.id" v-on="on">Delete</v-btn>
+                                    </template>
+                                    <v-card class="pa-3">
+                                        <b>Are you sure you want to delete the template '{{this.showingTemplate.name}}'?</b>
+                                        <v-card-actions>
+                                            <v-layout justify-center>
+                                                <v-btn @click="deleteTemplate" color="error">
+                                                    Yes
+                                                </v-btn>
+                                                <v-btn @click="hideDeleteDialog()">
+                                                    No
+                                                </v-btn>
+                                            </v-layout>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+            </v-layout>
+        </v-container>
     </div>
 </template>
 
@@ -114,28 +126,31 @@ import api from "@/api.js";
 import draggable from "vuedraggable";
 import TimeAgo from "vue2-timeago";
 
+const newTemplate = {
+  actions: [],
+  name: "New Template",
+  frequency: "",
+  mobsters: []
+};
+
 export default {
   data() {
     return {
       templates: [],
-      showingTemplate: {
-        actions: [],
-        name: "New Template",
-        frequency: "",
-        mobsters: []
-      },
+      showingTemplate: {},
       selectedMobsterId: "",
       selectedAvailableMobsterId: "",
       mobsters: [],
       actionConfigs: [],
       originalTemplate: {},
-      frequences: ["Daily", "Weekly", "Monthly"],
+      frequencies: ["Daily", "Weekly", "Monthly"],
       offset: {
         bottom: 0
       },
       user: "",
       errorMessage: "",
-      successMessage: ""
+      successMessage: "",
+      showingDeleteTemplate: false
     };
   },
   methods: {
@@ -146,25 +161,11 @@ export default {
     async loadTemplates() {
       this.templates = await api.getActionTemplates();
     },
-    handleCommand(command) {
-      if (command === "new") {
-        //todo: feature new
-
-        return (this.showingTemplate = {
-          actions: [],
-          name: "New Template",
-          frequency: "",
-          mobsters: []
-        });
-      }
-
-      this.showingTemplate = JSON.parse(JSON.stringify(command));
-      this.originalTemplate = command;
-    },
     async loadActionConfigs() {
       this.actionConfigs = await api.getActionConfigs();
     },
     async saveTemplate() {
+      window.scrollTo(0, 0);
       this.showingTemplate.user = this.user.email;
       var response = await api.saveActionTemplate(this.showingTemplate);
 
@@ -216,32 +217,16 @@ export default {
     },
     async loadMobsters() {
       this.loading = true;
-      this.mobsters = await api.getMobsters();
+      this.mobsters = await api.getAllMobsters();
       this.loading = false;
     },
-    showTemplateDelete() {
-      let thisObj = this;
-      this.$confirm(
-        "This will permanently delete the template. Continue?",
-        "Warning",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "warning"
-        }
-      ).then(() => {
-        var deletingTemplate = thisObj.showingTemplate;
-        thisObj.deleteTemplate(deletingTemplate);
-
-        this.$message({
-          type: "success",
-          message: "Deleted ActionTemplate '" + deletingTemplate.name + "'."
-        });
-      });
-    },
     async deleteTemplate() {
-      console.log(this.showingTemplate);
+      this.showingDeleteTemplate = false;
+      window.scrollTo(0, 0);
       var result = await api.deleteActionTemplate(this.showingTemplate.id);
+      this.setSuccessMessage(
+        "Successfully deleted template '" + this.showingTemplate.name + "'."
+      );
       this.showingTemplate = {
         actions: [],
         name: "New Template",
@@ -250,6 +235,15 @@ export default {
       };
       this.loadTemplates();
       return result;
+    },
+    createNew() {
+      this.showingTemplate = JSON.parse(JSON.stringify(newTemplate));
+    },
+    templateChanged(template) {
+      this.originalTemplate = JSON.parse(JSON.stringify(template));
+    },
+    hideDeleteDialog() {
+        this.showingDeleteTemplate = false
     }
   },
   created() {
