@@ -12,16 +12,25 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
-import { faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { faLightbulb } from '@fortawesome/free-solid-svg-icons'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
-import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
+import {
+  faBars,
+  faSpinner,
+  faPaperPlane,
+  faLightbulb,
+  faCheckCircle,
+  faEye
+} from '@fortawesome/free-solid-svg-icons'
+
+import { } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faUserCircle, faBars, faSpinner, faPaperPlane, faLightbulb, faCheckCircle);
+library.add(faBars,
+  faSpinner,
+  faPaperPlane,
+  faLightbulb,
+  faCheckCircle,
+  faEye);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

@@ -22,7 +22,9 @@
             </v-card-title>
             <v-container>
               <v-layout justify-start>
-                <v-flex xs1 class="mt-2"><h3>Filter By:</h3></v-flex>
+                <v-flex xs1 class="mt-2">
+                  <h3>Filter By:</h3>
+                </v-flex>
                 <v-flex xs1>
                   <v-btn-toggle v-model="accountStatuses" @change="accountStatusChanged">
                     <v-btn flat small fab :disabled="loading">
@@ -45,22 +47,30 @@
                 </v-flex>
               </v-layout>
             </v-container>
-            <v-data-table :headers="accountHeaders" :items="mobsters" class="elevation-1" :loading="loading" hide-actions>
+            <v-data-table :headers="accountHeaders" :items="mobsters" class="elevation-1" :loading="loading" hide-actions expand>
               <template v-slot:items="props">
-                <td>
-                  <Status :status="props.item.actionJobStatus" />
-                </td>
-                <td class="text-xs-left">
-                  {{props.item.username}}
-                </td>
-                <td class="text-xs-left">
-                  {{getPriority(props.item.priority)}}
-                </td>
+                <td style="width: 5%">
+                    <v-btn small @click="props.expanded = !props.expanded">
+                      {{props.expanded ? 'Hide' : 'View'}}
+                    </v-btn>
+                  </td>
+                  <td style="width: 10%">
+                    <Status :status="props.item.actionJobStatus" />
+                  </td>
+                  <td class="text-xs-left">
+                    {{props.item.username}}
+                  </td>
+                  <td class="text-xs-left">
+                    {{getPriority(props.item.priority)}}
+                  </td>
               </template>
               <template v-slot:no-results>
                 <v-alert :value="true" color="error" icon="warning">
                   No accounts found by the username of "{{ search }}" found.
                 </v-alert>
+              </template>
+              <template slot="expand" slot-scope="props">
+                <ActionJobs :mobster="props.item"/>
               </template>
             </v-data-table>
           </v-card>
@@ -79,7 +89,13 @@ import ActionJobs from "@/components/ActionJobs.vue";
 import ActionJobStatistics from "./ActionJobStatistics.vue";
 import Priority from "./Priority.vue";
 import Status from "./Status.vue";
-import { getIdle, getQueued, getRunning, getComplete, Status as StatusConstants} from "@/statuses";
+import {
+  getIdle,
+  getQueued,
+  getRunning,
+  getComplete,
+  Status as StatusConstants
+} from "@/statuses";
 
 export default {
   name: "Accounts",
@@ -92,8 +108,8 @@ export default {
       accountHeaders: [
         { text: "View", value: "view", sortable: false },
         { text: "Status", value: "status", sortable: false },
-        { text: "Username", value: "username", sortable: false},
-        { text: "Priority", value: "priority", sortable: false}
+        { text: "Username", value: "username", sortable: false },
+        { text: "Priority", value: "priority", sortable: false }
       ],
       accountStatuses: -1,
       accountSearch: ""
@@ -102,9 +118,12 @@ export default {
   methods: {
     async loadMobsters() {
       this.loading = true;
-      var result = await api.getMobsters(this.pageNumber - 1, this.getStatusFromToggle(this.accountStatuses));
+      var result = await api.getMobsters(
+        this.pageNumber - 1,
+        this.getStatusFromToggle(this.accountStatuses)
+      );
       this.mobsters = result.content;
-      this.totalPages = result.totalPages
+      this.totalPages = result.totalPages;
       this.loading = false;
     },
     accountStatusChanged(value) {
@@ -120,9 +139,7 @@ export default {
           return "High";
       }
     },
-    searchByMobster() {
-
-    },
+    searchByMobster() {},
     getIdle() {
       return getIdle();
     },
@@ -137,13 +154,18 @@ export default {
     },
     getStatusFromToggle(toggle) {
       switch (toggle) {
-        case -1: return "";
-        case 0: return StatusConstants.COMPLETE;
-        case 1: return StatusConstants.RUNNING;
-        case 2: return StatusConstants.QUEUED;
-        case 3: return StatusConstants.IDLE;
-        default: 
-        throw Error("unrecognized toggle: " + toggle)
+        case -1:
+          return "";
+        case 0:
+          return StatusConstants.COMPLETE;
+        case 1:
+          return StatusConstants.RUNNING;
+        case 2:
+          return StatusConstants.QUEUED;
+        case 3:
+          return StatusConstants.IDLE;
+        default:
+          throw Error("unrecognized toggle: " + toggle);
       }
     }
   },
