@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
     // proxy all webpack dev-server requests starting with /api
     // to our Spring Boot backend (localhost:8088) using http-proxy-middleware
@@ -10,5 +12,12 @@ module.exports = {
           changeOrigin: true
         }
       }
+    },
+    configureWebpack: {
+      plugins: [
+        new webpack.EnvironmentPlugin([
+          'CLIENT_ID',
+        ]),
+      ]
     }
   }
