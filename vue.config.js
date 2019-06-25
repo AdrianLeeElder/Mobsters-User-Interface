@@ -17,6 +17,7 @@ module.exports = {
     plugins: [
       new webpack.EnvironmentPlugin({
         CLIENT_ID: '0oan3vml3k4TQUvJz356',
+        REDIRECT_URI: 'http://localhost:8080/implicit/callback'
       }),
     ]
   }
