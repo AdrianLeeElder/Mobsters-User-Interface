@@ -2,7 +2,7 @@ import axios from 'axios'
 import Vue from "vue"
 
 const client = axios.create({
-  baseURL: `http://localhost:8080`
+  baseURL: process.env.API_URL
 })
 
 const apiVersion = "/api/v1/"
