@@ -1,6 +1,6 @@
 <template>
     <div>
-        <font-awesome-icon v-if="getClass(this.status).length > 0" :icon="getClass(this.status)" />
+        <font-awesome-icon v-if="getClass(this.status).length > 0" :icon="getClass(this.status)" :spin="getClass(this.status).indexOf('spin') !== -1"/>
     </div>
 </template>
 

@@ -11,7 +11,6 @@ function getIcon(status) {
           return "lightbulb";
         case Status.QUEUED:
           return "paper-plane";
-          break;
         case Status.RUNNING:
           return "spinner";
         case Status.COMPLETE:
@@ -19,6 +18,34 @@ function getIcon(status) {
         default:
           return "";
       }
+}
+
+function getIdle() {
+  return {
+    name: Status.IDLE,
+    icon: getIcon(Status.IDLE)
+  }
+}
+
+function getQueued() {
+  return {
+    name: Status.QUEUED,
+    icon: getIcon(Status.QUEUED)
+  }
+}
+
+function getComplete() {
+  return {
+    name: Status.COMPLETE,
+    icon: getIcon(Status.COMPLETE)
+  }
+}
+
+function getRunning() {
+  return {
+    name: Status.RUNNING,
+    icon: getIcon(Status.RUNNING)
+  }
 }
 
 function getToolTip(status) {
@@ -34,4 +61,4 @@ function getToolTip(status) {
       }
 }
 
-export {getIcon, getToolTip, Status}
+export {getIcon, getToolTip, Status, getRunning, getIdle, getQueued, getComplete}

@@ -1,29 +1,5 @@
 <template>
   <div>
-    <!-- <el-card>
-      <el-row type="flex" justify="end">
-        <el-col>
-          <el-progress :type="progressBarType" status="success" :text-inside="true" :stroke-width="26" :percentage="statistics.completionProgress"></el-progress>
-        </el-col>
-        <el-col :span="16">
-          <div id="text-display">
-            <span v-if="statistics.averageCompletionTime">
-              <b>Average Completion Time: </b>
-              {{averageCompletionTime}}
-            </span>
-            <div v-for="(status, index) in statuses" :key="index" style="display: inline-block; float:right">
-              <el-tooltip :content="getToolTip(status)" effect="light">
-                <span style="margin-right: 10px;">
-                  <font-awesome-icon v-if="status.length > 0" :icon="getClass(status)" />
-                  <b style="margin-left: 5px">{{getValueForStatus(status)}}</b> {{status}}
-                </span>
-              </el-tooltip>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-card> -->
-
     <v-card class="pa-3 mb-2">
       <v-flex xs12 align-self-end>
         <span>{{ statistics.completionProgress }}%</span>

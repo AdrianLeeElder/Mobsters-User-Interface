@@ -17,10 +17,11 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faBars, faSpinner, faPaperPlane, faLightbulb, faCheckCircle);
+library.add(faUserCircle, faBars, faSpinner, faPaperPlane, faLightbulb, faCheckCircle);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

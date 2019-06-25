@@ -29,14 +29,12 @@ export default {
       return error.response;
     }) 
   },
-  getMobsters (number) {
-    return this.execute('get', mobstersApi + '?pageNumber=' + number)
+  getMobsters (number, status) {
+    
+    return this.execute('get', mobstersApi + '?pageNumber=' + number + '&status=' + (status ? status : ''))
   },
   getAllMobsters () {
     return this.execute('get', mobstersApi + `/all`)
-  },
-  getTotalMobsterPages() {
-    return this.execute('get', mobstersApi + '/total-pages')
   },
   /**
    * Show action jobs for the given mobster, and the limit.
