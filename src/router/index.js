@@ -5,9 +5,11 @@ import Templates from "@/components/Templates.vue"
 import Vue from 'vue'
 import Auth from '@okta/okta-vue'
 
+var clientId = process.env.CLIENT_ID ? process.env.CLIENT_ID : '0oan3vml3k4TQUvJz356';
+
 Vue.use(Auth, {
     issuer: 'https://dev-210965.okta.com/oauth2/default',
-    client_id: '0oan3vml3k4TQUvJz356',
+    client_id: clientId,
     redirect_uri: 'http://localhost:8080/implicit/callback',
     scope: 'openid profile email'
   })
