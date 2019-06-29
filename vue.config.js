@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-
 module.exports = {
   // proxy all webpack dev-server requests starting with /api
   // to our Spring Boot backend (localhost:8088) using http-proxy-middleware
@@ -19,7 +18,7 @@ module.exports = {
         CLIENT_ID: '0oan3vml3k4TQUvJz356',
         REDIRECT_URI: 'http://localhost:8080/implicit/callback',
         API_URL: 'http://localhost:8050'
-      }),
+      })
     ]
   }
 }
