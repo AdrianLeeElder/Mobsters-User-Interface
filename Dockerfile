@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 ARG MODE
-RUN npm run build --mode $MODE
+RUN npm run build -- --mode $MODE
 
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /mobsters/dist /usr/share/nginx/html
