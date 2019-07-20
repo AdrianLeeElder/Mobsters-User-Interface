@@ -3,7 +3,8 @@ WORKDIR /mobsters
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+ARG MODE
+RUN npm run build --mode $MODE
 
 FROM nginx:stable-alpine as production-stage
 COPY --from=build-stage /mobsters/dist /usr/share/nginx/html
