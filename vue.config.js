@@ -11,14 +11,5 @@ module.exports = {
         changeOrigin: true
       }
     }
-  },
-  configureWebpack: {
-    plugins: [
-      new webpack.EnvironmentPlugin({
-        CLIENT_ID: '0oan3vml3k4TQUvJz356',
-        REDIRECT_URI: 'http://localhost:8080/implicit/callback',
-        API_URL: 'http://localhost:8050'
-      })
-    ]
   }
 }
