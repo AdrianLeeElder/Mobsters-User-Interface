@@ -53,7 +53,7 @@ export default {
     async isAuthenticated() {
       this.authenticated = await this.$auth.isAuthenticated();
       this.user = await this.$auth.getUser();
-      this.avatarApi = (await avatarBaseApi) + "?name=" + this.user.name;
+      this.avatarApi = await avatarBaseApi + "?name=" + this.user.name;
     },
     login() {
       this.$auth.loginRedirect("/");
