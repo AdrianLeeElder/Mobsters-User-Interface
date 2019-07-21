@@ -20,8 +20,10 @@ COPY . .
 # Install the dependencies, can be commented out if you're running the same node version
 RUN npm install
 
+ARG MODE
+
 # run webpack and the vue-loader
-RUN npm run build
+RUN npm run build -- --mode $MODE
 
 # copy the built app to our served directory
 RUN cp -r dist/* /var/www/html
