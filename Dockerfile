@@ -31,5 +31,7 @@ RUN cp -r dist/* /var/www/html
 # make all files belong to the nginx user
 RUN chown nginx:nginx /var/www/html
 
+EXPOSE 8082
+
 # start nginx and keep the process from backgrounding and the container from quitting
 CMD ["nginx", "-g", "daemon off;"]
